@@ -42,6 +42,10 @@
 #define HBTP_HOLD_DURATION_US			(10)
 #define HBTP_PINCTRL_DDIC_SEQ_NUM		(4)
 
+#ifdef CONFIG_SWEEP2SLEEP
+extern void s2s_setdev(struct input_dev * input_device);
+#endif
+
 struct hbtp_data {
 	struct platform_device *pdev;
 	struct input_dev *input_dev;
@@ -307,6 +311,11 @@ static int hbtp_input_create_input_dev(struct hbtp_input_absinfo *absinfo)
 	}
 
 	hbtp->input_dev = input_dev;
+
+#ifdef CONFIG_SWEEP2SLEEP
+	s2s_setdev(hbtp->input_dev);
+#endif
+
 	return 0;
 
 err_input_reg_dev:
